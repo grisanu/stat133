@@ -1,5 +1,0 @@
-name = "Grisanu Naing"
-SID = "23127672"
-email = "matt.jgrisanu@berkeley.edu"
-github <- name = "mattgrisanu"
-status = "enrolled"
