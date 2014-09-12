@@ -5,5 +5,19 @@
     "email": "matt.jgrisanu@berkeley.edu", 
     "github_name": "mattgrisanu", 
     "status": "enrolled", 
-    "grades": {}
+    "grades": {
+        "hw1": {
+            "note": "", 
+            "hash": "1257198ed54f2de9b4d378a27515a8fd945fb542", 
+            "earned": 13, 
+            "possible": 14, 
+            "penalty": 0, 
+            "parts": {
+                "ex1": {
+                    "possible": 14, 
+                    "earned": 13
+                }
+            }
+        }
+    }
 }
