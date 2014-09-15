@@ -109,5 +109,5 @@ set.seed(47) # THIS LINE MUST COME BEFORE YOUR GENERATED DATA. DO NOT REMOVE IT.
 # random.data <- your code here
 # data.cor <- your code here
 random.data = rnorm(n.ex1.data);
-data.cor = cor(random.data, ex1.data);
+data.cor = cor(random.data, ex1.data.v);
 
