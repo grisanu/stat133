@@ -12,7 +12,5 @@ INFO:root:(1 points) R('all.equal(ex1.data.double, sol$ex1.data.double)')[0] is 
 INFO:root:(1 points) R('all.equal(ex1.data.sum, sol$ex1.data.sum)')[0] is True
 INFO:root:(1 points) R('all.equal(random.data, sol$random.data)')[0] is True
 INFO:root:(1 points) R('all.equal(100, length(random.data))')[0] is True
-ERROR:root:(1 points) Checking R('all.equal(data.cor, sol$data.cor)')[0]
-ERROR:root:... Expecting: True
-ERROR:root:... But got:   Attributes: < Modes: list, NULL >
-INFO:root:You got a 13 out of 14.
+INFO:root:(1 points) R('all.equal(data.cor, sol$data.cor)')[0] is True
+INFO:root:You got a 14 out of 14.
