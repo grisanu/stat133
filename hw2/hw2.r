@@ -166,14 +166,16 @@ BerkArea$pricePsqft = BerkArea$price/BerkArea$bsqft;
 # bedrooms then br5 will be 5. Otherwise it will be the number of bedrooms.
 
 # br5 <- your code here
-br5 = BerkArea$br;
+br_temp = BerkArea$br;
+index_of_greaterthan5 = which(br_temp > 5);
+br5 = replace(br_temp, index_of_greaterthan5, 5);
 
 # Q 9.
 # Use the rainbow function to create a vector of 5 colors, call this vector rCols.
 # When you call this function, set the alpha argument to 0.25 (we will describe what this does later)
 
 # rCols <- your code here
-
+rCols = rainbow(n=5, alpha = 0.25);
 
 # Create a vector called brCols of 3999 colors where each element's
 # color corresponds to the number of bedrooms in the br5.
