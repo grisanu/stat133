@@ -103,7 +103,7 @@ load("SFHousing.rda")
 # n.cities.
 
 # n.cities <- your code here
-
+n.cities = length(unique(housing$city));
 
 # How many house sales are included in the dataset?  Store the answer in
 # the variable n.housesale.
@@ -182,7 +182,7 @@ rCols = rainbow(n=5, alpha = 0.25);
 # For example, if the element in br5 is 3  then the color will be the third color in rCols.
 
 # brCols <- your code here
-
+brCols = rCols[br5];
 
 ######
 # We are now ready to make a plot!
@@ -207,8 +207,14 @@ legend(legend = 1:5, fill = rCols, "topright")
 # Make sure that the axes are labelled correctly.
 
 # plot( your code here )
+plot(pricePsqft ~ year,
+     data = BerkArea, 
+     main = "Housing prices in the Berkeley Area",
+     xlab = "Year built",
+     ylab = "Price per square foot",
+     col = brCols, pch = 19, cex = 0.5)
 # legend( your code here )
-
+legend(legend = 1:5, fill = rCols, "topright")
 ## Food for thought (not graded):
 ## Examine the plot.  Do you see any interesting features.
 
