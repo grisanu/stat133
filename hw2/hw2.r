@@ -15,7 +15,7 @@
 # load the data into R/RStudio.
 
 # load( your code here )
-
+load("family.rda")
 
 
 # In the following exercises try to write your code to be as general as possible
@@ -32,7 +32,9 @@
 # separately).
 
 # OW_NHANES <- your code here
-
+male_obese = as.numeric((family$gender =="m")&(family$bmi > 26));
+female_obese = as.numeric((family$gender == "f")&(family$bmi >25));
+OW_NHANES = as.logical(male_obese+female_obese);
 
 # Q2. 
 # Here is an alternative way to create the same vector that introduces 
@@ -45,7 +47,7 @@
 # is 26 and second element is 25.
 
 # OWval <- your code here
-
+OWval = c(26,25);
 
 # Create the OW_limit vector by subsetting OWval by position, where the 
 # positions are the numeric values in the gender variable 
@@ -53,13 +55,13 @@
 # numeric vector)
 
 # OW_limit <- your code here
-
+OW_limit = OWval[family$gender];
 
 # Finally, us OW_limit and bmi to create the desired logical vector, called OW_NHANES2
 # which, like OW_NHANES, is TRUE if a member of family is obese and FALSE otherwise
 
 # OW_NHANES2 <- your code here
-
+OW_NHANES2 = OW_limit < family$bmi;
 
 # Q3.
 # Use the vector OW_limit and each person's height to find the weight 
@@ -72,7 +74,7 @@
 
 # Now calculate OW_weight 
 # OW_weight <- your code here
-
+OW_weight = OW_limit*2.2*(((2.5*family$height)/100)^2);
 
 # Make a plot of actual weight against the weight at which they would
 # be overweight using the plot function.
@@ -80,7 +82,8 @@
 
 # plot( your code here )
 # abline( your code here )
-
+plot(family$weight,OW_weight);
+abline(a=0,b=1,untf=FALSE,col='red');
 
 #PART 2.  San Framcisco Housing Data
 # The datafile SFHousing.rda is in your hw2 folder.
@@ -90,7 +93,7 @@
 # Use the load() command to load the data into R/RStudio.
 
 # load( your code here )
-
+load("SFHousing.rda")
 
 # Q4. (not graded)
 # Use the following functions to examine the dataset
@@ -129,12 +132,13 @@
 # one with the names of the variables we want to use.
 
 # local.cities <- your code here
-
+local.cities=c("Albany","Berkeley", "Piedmont","Emeryville");
 # some.housing.variables <- your code here
+some.housing.variables = c("city", "zip", "price", "br", "bsqft", "year");
 
 # Create the smaller data frame
 # BerkArea <- your code here
-
+BerkArea = housing[housing$city %in% local.cities,some.housing.variables];
 
 # Q6.
 # We are interested in making plots of price and size of house, but before we do this
@@ -143,13 +147,18 @@
 # and eliminate all of those houses that are above either of these 99th percentiles
 # Call this new data frame BerkArea, as well. It should have 3999 oobservations.
 
+price_BerkArea_99perc = quantile(BerkArea$price, probs=0.99, na.rm =TRUE);
+bsqft_BerkArea_99perc = quantile(BerkArea$bsqft, probs=0.99, na.rm =TRUE);
+
 # BerkArea <- your code here
+BerkArea = BerkArea[with(BerkArea, price <= price_BerkArea_99perc & bsqft <= bsqft_BerkArea_99perc), ];
 
 # Q7.
 # Create a new vector that is called pricePsqft by dividing the sale price by the square footage
 # Add this new variable to the data frame.
 
 # BerkArea$pricePsqft <- your code here
+BerkArea$pricePsqft = BerkArea$price/BerkArea$bsqft;
 
 #  Q8.
 # Create a vector called br5 that is the number of bedrooms in the house, except
@@ -157,8 +166,7 @@
 # bedrooms then br5 will be 5. Otherwise it will be the number of bedrooms.
 
 # br5 <- your code here
-
-
+br5 = BerkArea$br;
 
 # Q 9.
 # Use the rainbow function to create a vector of 5 colors, call this vector rCols.
@@ -167,7 +175,7 @@
 # rCols <- your code here
 
 
-# Create a vector called brCols of 4059 colors where each element's
+# Create a vector called brCols of 3999 colors where each element's
 # color corresponds to the number of bedrooms in the br5.
 # For example, if the element in br5 is 3  then the color will be the third color in rCols.
 
