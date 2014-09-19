@@ -109,17 +109,15 @@ n.cities = length(unique(housing$city));
 # the variable n.housesale.
 
 # n.housesale <- your code here
-
+n.housesale = length(housing$br);
 
 # How many of these house sales were in Berkeley?
 # n.housesale.Berk <- sum(housing$city=="Berkeley")
+n.housesale.Berk = sum(housing$city == "Berkeley");
 
 # Create a vector with the names of all variables in housing.
-
 # all.housing.variable <- your code here
-
-
-
+all.housing.variable = objects(housing);
 
 # Q5.
 # We will work the houses in Albany, Berkeley, Piedmont, and Emeryville only.
