@@ -382,13 +382,13 @@ load("London2012ALL_ATHLETES.rda");
 
 # How many athletes competed in the 2012 Olympics?
 # n.athletes <- your code here
-n.atheletes = length(athletes$Name);
+n.athletes = length(athletes$Name);
 
 # How many women competed?
 
 # What proportion of the participants were women?
 # frac.women <- your code here
-frac.women = length(athletes[athletes$Sex == "F",]$Sex)/n.atheletes;
+frac.women = length(athletes[athletes$Sex == "F",]$Sex)/n.athletes;
 
 # How many sports were there?
 # n.sports <- your code here
