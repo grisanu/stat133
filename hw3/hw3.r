@@ -442,7 +442,13 @@ best.plot = 2;
 
 # orderSport <- your code here
 # barplot( your code here )
-#orderSport = 
+orderSport = order(table(athletes$Sport));
+athTab2_ordered = athTab2[ ,orderSport];
+
+barplot(athTab2_ordered, 
+        beside = TRUE,
+        main = "Sport by Sex",
+        las =2, cex.names = 0.5, cex.axis = 0.5);
 
 # Q17. Finally to make the plot more informaation rich, try turning
 # the x-axis labels on their side. To do this, find a parameter
