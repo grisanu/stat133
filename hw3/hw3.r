@@ -86,10 +86,10 @@ wr.name = as.character(wr1500m$athlete[min(wr1500m$times) == wr1500m$times]);
 # times_sec <- your code here
 # wr1500m <- your code here
 # plot( your code here )
-time_sec = wr1500m$times + 180;
-wr1500m = cbind(wr1500m, time_sec);
+times_sec = wr1500m$times + 180;
+wr1500m = cbind(wr1500m, times_sec);
 
-plot(wr1500m$year, wr1500m$time_sec, type = "l");
+plot(wr1500m$year, wr1500m$times_sec, type = "l");
 
 # Q2b. Redo the plot using a date that incorporates the month as 
 # well as the year. For example, in Sep 1904 the world record 
@@ -107,7 +107,7 @@ new_year = (replace(wr1500m$month, which(is.na(wr1500m$month)), 6)/12) + wr1500m
 
 wr1500m = cbind(wr1500m, new_year);
 
-plot(wr1500m$new_year, wr1500m$time_sec, type = "l");
+plot(wr1500m$new_year, wr1500m$times_sec, type = "l");
 
 # Q3. The current world record was set in 1998. If we want to
 # show that this record still stands in 2014, we could add a 
@@ -122,8 +122,8 @@ plot(wr1500m$new_year, wr1500m$time_sec, type = "l");
 # lines( your code here )
 wr_1998 = wr1500m$new_year[length(wr1500m$new_year)];
 
-plot(wr1500m$new_year, wr1500m$time_sec, type = "l", xlim = c(wr1500m$new_year[1], 2014+9/12));
-lines(c(wr_1998, 2014+9/12), rep(wr1500m$time_sec[length(wr1500m$time_sec)], 2));
+plot(wr1500m$new_year, wr1500m$times_sec, type = "l", xlim = c(wr1500m$new_year[1], 2014+9/12));
+lines(c(wr_1998, 2014+9/12), rep(wr1500m$times_sec[length(wr1500m$times_sec)], 2));
 
 # Q4. There are two times where the record stood for several
 # years - in 1944 and 1998. Let's make it easier to see these
@@ -146,8 +146,8 @@ lines(c(wr_1998, 2014+9/12), rep(wr1500m$time_sec[length(wr1500m$time_sec)], 2))
 wr_1944 = wr1500m$new_year[wr1500m$year == 1944];
 abline(v = wr_1944, col = "grey");
 abline(v = wr_1998, col = "grey");
-text(wr_1944, wr1500m$time_sec[wr1500m$year == 1944]+15, labels = wr1500m$athlete[wr1500m$year == 1944], pos = 2, cex = 0.5 );
-text(wr_1998, wr1500m$time_sec[wr1500m$year == 1998]+15, labels = wr1500m$athlete[wr1500m$year == 1998], pos = 2, cex = 0.5 );
+text(wr_1944, wr1500m$times_sec[wr1500m$year == 1944]+15, labels = wr1500m$athlete[wr1500m$year == 1944], pos = 2, cex = 0.5 );
+text(wr_1998, wr1500m$times_sec[wr1500m$year == 1998]+15, labels = wr1500m$athlete[wr1500m$year == 1998], pos = 2, cex = 0.5 );
 
 # Q5. Now we are ready to add other contextual information.
 # Remake the plot as before but now adding axis labels and a title.
@@ -156,7 +156,7 @@ text(wr_1998, wr1500m$time_sec[wr1500m$year == 1998]+15, labels = wr1500m$athlet
 # put your final version of the plotting commands below.
 
 plot(wr1500m$new_year,
-     wr1500m$time_sec, 
+     wr1500m$times_sec, 
      type = "l", 
      xlim = c(wr1500m$new_year[1], 2014+9/12),
      xlab = "Year record was set",
@@ -164,11 +164,11 @@ plot(wr1500m$new_year,
      main = "Change in World Record Time over time",
      cex = 0.5);
 
-lines(c(wr_1998, 2014+9/12), rep(wr1500m$time_sec[length(wr1500m$time_sec)], 2));
+lines(c(wr_1998, 2014+9/12), rep(wr1500m$times_sec[length(wr1500m$times_sec)], 2));
 abline(v = wr_1944, col = "grey");
 abline(v = wr_1998, col = "grey");
-text(wr_1944, wr1500m$time_sec[wr1500m$year == 1944]+15, labels = wr1500m$athlete[wr1500m$year == 1944], pos = 2, cex = 0.5 );
-text(wr_1998, wr1500m$time_sec[wr1500m$year == 1998]+15, labels = wr1500m$athlete[wr1500m$year == 1998], pos = 2, cex = 0.5 );
+text(wr_1944, wr1500m$times_sec[wr1500m$year == 1944]+15, labels = wr1500m$athlete[wr1500m$year == 1944], pos = 2, cex = 0.5 );
+text(wr_1998, wr1500m$times_sec[wr1500m$year == 1998]+15, labels = wr1500m$athlete[wr1500m$year == 1998], pos = 2, cex = 0.5 );
 ## You have finised the first plot!!
 
 ################################
