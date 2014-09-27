@@ -332,11 +332,20 @@ symbols(wonMedal$longitude,
 # display.brewer.all( your code here )
 # brewer.pal( your code here )
 
+display.brewer.all();
+brewer.pal(8, "RdYlBu");
+
 # myGold <- your selected color
+myGold = paste(brewer.pal(8, "RdYlBu")[4],"50", sep = "");
 
 #world <- your code here
 #symbols( your code here )
+world = map(fill = TRUE, col = "grey88")
 
+symbols(wonMedal$longitude, 
+        wonMedal$latitude, 
+        circles = sqrt(wonMedal$Total),
+        inches = FALSE, add = TRUE, bg = myGold);
 
 ## That was the FINAL version of this plot
 
@@ -351,6 +360,7 @@ symbols(wonMedal$longitude,
 # in the Olympics.
 
 # load( )
+load("London2012ALL_ATHLETES.rda");
 
 # There is one observation for each athlete. 
 # (Actually, about 20 athletes have two records if they
@@ -372,15 +382,17 @@ symbols(wonMedal$longitude,
 
 # How many athletes competed in the 2012 Olympics?
 # n.athletes <- your code here
+n.atheletes = length(athletes$Name);
 
 # How many women competed?
 
 # What proportion of the participants were women?
 # frac.women <- your code here
+frac.women = length(athletes[athletes$Sex == "F",]$Sex)/n.atheletes;
 
 # How many sports were there?
 # n.sports <- your code here
-
+n.sports = length(unique(athletes$Sport));
 
 #Q14. Make a barplot of Sport and Sex that emphasizes the 
 # important differences. To do this, first make a table of 
@@ -391,10 +403,13 @@ symbols(wonMedal$longitude,
 
 # athTab <- your code here
 # make two barplots
-
+athTab = table(athletes$Sport, athletes$Sex);
+barplot(athTab, beside = TRUE)
+barplot(athTab, beside = FALSE)
 
 # what should beside be set to, T/F?
 #set.beside <- your answer
+set.beside = T;
 
 ### Barplot with beside = TRUE provides the easiest comparison. 
 
@@ -405,14 +420,15 @@ symbols(wonMedal$longitude,
 
 # athTab2 <- table()
 # make barplot
-
+athTab2 = table(athletes$Sex, athletes$Sport);
+barplot(athTab2, beside = TRUE)
 
 # Compare the barplot with (Sex, Sport) vs (Sport, Sex). 
 # Which makes a more interesting visual comparison, plot 1 or 2?
 # store your answer (1 or 2) in best.plot.
 
 # best.plot <- your answer
-
+best.plot = 2;
 
 # Q16. Notice that the bars are in alphabetical order by sport.
 # To facilitate comparisons, we might want to arrange
@@ -426,7 +442,7 @@ symbols(wonMedal$longitude,
 
 # orderSport <- your code here
 # barplot( your code here )
-
+#orderSport = 
 
 # Q17. Finally to make the plot more informaation rich, try turning
 # the x-axis labels on their side. To do this, find a parameter
