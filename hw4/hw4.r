@@ -137,6 +137,19 @@ tryCatch(checkEquals(remove.outlier.t, removeOutliers(ex1.test, 0.25), ),
 meanByLevel <- function(data) {
 
         # your code here
+    #find not numeric
+    not_num_col = which(sapply(1:length(data), function(colidx) class(data[, colidx]) != "numeric"))
+    unique_factors = unique(data[not_num_col])
+    
+    level.means = sapply(1:length(unique_factors[,1]), 
+                         function(rowidx) 
+                           sapply(1:(length(data) -1), 
+                                  function(colidx) mean(data[data[,5] == unique_factors[rowidx,1], colidx])
+                                 )
+                         );
+      level.means = t(level.means);
+    
+    return(level.means);
 }
 
 tryCatch(checkIdentical(mean.by.level.t, meanByLevel(iris), checkNames=F),
