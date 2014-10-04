@@ -54,11 +54,15 @@ outlierCutoff <- function(data) {
       iqr_data = rbind(median_data -iqr_data, median_data +iqr_data);
  list_data = as.matrix(data)
 # remove outlier
-    list_data = lapply(1:length(data), function(colidx) list_data[(list_data[,colidx] >= iqr_data[1,colidx] & 
-                                                                   list_data[,colidx] <= iqr_data[2,colidx]), colidx]);
+    list_data = lapply(1:length(data), function(colidx) list_data[(list_data[,colidx] > iqr_data[1,colidx] & 
+                                                                   list_data[,colidx] < iqr_data[2,colidx]), colidx]);
   
     outlier.cutoffs = rbind(sapply(list_data, min), sapply(list_data, max));
 
+
+#F
+
+outlier.cutoffs = iqr_data;
   return(outlier.cutoffs);  
 }
 
@@ -90,7 +94,18 @@ removeOutliers <- function(data, max.outlier.rate) {
         stopifnot(max.outlier.rate>=0 & max.outlier.rate<=1)
 
             # your code here
-    }
+        list_data = as.list(data);
+        
+        median_data = sapply(list_data, median);
+        
+        # iqr matrix with lower and upper bound   
+        iqr_data = sapply(list_data, IQR) *1.5;
+        iqr_data = rbind(median_data -iqr_data, median_data +iqr_data);
+        list_data = as.matrix(data)
+        
+        #outlier fraction by row
+        number_outlier_by_row = sapply(1:length(data[,1]), function(rowidx) length(which(data[rowidx,] < iqr_data[])))
+}
 
 tryCatch(checkEquals(remove.outlier.t, removeOutliers(ex1.test, 0.25), ),
                   error=function(err) errMsg(err))
