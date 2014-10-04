@@ -19,7 +19,7 @@ truncate <- function(input.vector, trim) {
     stopifnot(0<=trim & trim<=0.5) # this line makes sure trim in [0,0.5]
     # your code here
     
-    truncated.vector = input.vector[input.vector >= quantile(input.vector, trim) && input.vector <= quantile(input.vector, 1-trim)];
+    truncated.vector = input.vector[input.vector >= quantile(input.vector, trim) & input.vector <= quantile(input.vector, 1-trim)];
     
     return(truncated.vector);
 }
@@ -46,16 +46,16 @@ tryCatch(checkIdentical(integer(0), truncate(1:6, trim=0.5)),
 
 outlierCutoff <- function(data) {
         # your code here
-  list_data = as.matrix(data);
+  list_data = as.list(data);
   
     median_data = sapply(list_data, median);
 # iqr matrix with lower and upper bound   
     iqr_data = sapply(list_data, IQR) *1.5;
-      iqr_data = rbind(median_data-iqr_data, median_data+iqr_data);
-
+      iqr_data = rbind(median_data -iqr_data, median_data +iqr_data);
+ list_data = as.matrix(data)
 # remove outlier
-    list_data = lapply(1:length(data), function(colidx) list_data[(list_data[,colidx] > iqr_data[1,colidx] && 
-                                                                   list_data[,colidx] < iqr_data[2,colidx]), colidx]);
+    list_data = lapply(1:length(data), function(colidx) list_data[(list_data[,colidx] >= iqr_data[1,colidx] & 
+                                                                   list_data[,colidx] <= iqr_data[2,colidx]), colidx]);
   
     outlier.cutoffs = rbind(sapply(list_data, min), sapply(list_data, max));
 
