@@ -250,6 +250,10 @@ tryCatch(checkIdentical(std.level.diff.t, abs(stdLevelDiff(iris)), checkNames=F)
 simpleNormSim <- function(means, sim.size=50, var=1) {
 
         # your code here
+      std = sqrt(var)
+      
+      #return
+        simulation = lapply(1:length(means), function(x) rnorm(sim.size, mean = means[x], sd = std))
 }
 
 set.seed(47)
