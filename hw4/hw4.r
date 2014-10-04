@@ -101,10 +101,16 @@ removeOutliers <- function(data, max.outlier.rate) {
         # iqr matrix with lower and upper bound   
         iqr_data = sapply(list_data, IQR) *1.5;
         iqr_data = rbind(median_data -iqr_data, median_data +iqr_data);
-        list_data = as.matrix(data)
+        list_data = as.matrix(data);
         
         #outlier fraction by row
-        number_outlier_by_row = sapply(1:length(data[,1]), function(rowidx) length(which(data[rowidx,] < iqr_data[])))
+        outlier_fraction_by_row = (sapply(1:length(data[,1]), function(rowidx) sum(as.numeric(data[rowidx,] < iqr_data[1,] | 
+                                                                                           data[rowidx,] > iqr_data[2,]))))/5;
+        # rows index that must be removed
+        row_index_removed = which(outlier_fraction_by_row > max.outlier.rate)*-1;
+        subset.data = data.frame(list_data[row_index_removed,]);
+          
+return(subset.data);
 }
 
 tryCatch(checkEquals(remove.outlier.t, removeOutliers(ex1.test, 0.25), ),
