@@ -113,7 +113,7 @@ removeOutliers <- function(data, max.outlier.rate) {
 return(subset.data);
 }
 
-tryCatch(checkEquals(remove.outlier.t, removeOutliers(ex1.test, 0.25), ),
+tryCatch(checkEquals(remove.outlier.t, removeOutliers(ex1.test, 0.25), checkNames=F),
                   error=function(err) errMsg(err))
 
 
@@ -137,9 +137,31 @@ tryCatch(checkEquals(remove.outlier.t, removeOutliers(ex1.test, 0.25), ),
 meanByLevel <- function(data) {
 
         # your code here
+    #find not numeric
+    not_num_col = which(sapply(1:length(data), function(colidx) class(data[, colidx]) != "numeric"))
+    unique_factors = unique(data[[not_num_col]])
+    
+    #new data frame without factor variable
+    data2 = data;
+    data2[not_num_col] = NULL;
+    
+    level.means = sapply(1:length(unique_factors), 
+                         function(rowidx) 
+                           sapply(1:length(data2), 
+                                  function(colidx) mean(data2[data[,not_num_col] == unique_factors[rowidx], colidx])
+                                 )
+                         );
+      level.means = t(level.means);
+
+    #change col names
+      colnames(level.means) = colnames(data2);
+    #change row names
+      rownames(level.means) = unique_factors;
+    
+    return(level.means);
 }
 
-tryCatch(checkIdentical(mean.by.level.t, meanByLevel(iris), checkNames=F),
+tryCatch(checkEqualsNumeric(mean.by.level.t, meanByLevel(iris), checkNames=F),
          error=function(err) errMsg(err))
 
 
@@ -166,6 +188,41 @@ tryCatch(checkIdentical(mean.by.level.t, meanByLevel(iris), checkNames=F),
 stdLevelDiff <- function(data) {
 
         # your code here
+        
+      #find not numeric
+        not_num_col = which(sapply(1:length(data), function(colidx) class(data[, colidx]) != "numeric"
+                                   )
+                            )
+        unique_factors = unique(data[[not_num_col]])
+        
+      #new data frame without factor variable
+        data2 = data;
+        data2[not_num_col] = NULL;
+      
+      #real mean of all variables
+        real_mean = sapply(1:length(data2), function(colidx) mean(data2[,colidx]
+                                                                  )
+                           );
+      #real sd of all varialbes
+        real_sd = sapply(1:length(data2), function(colidx) sd(data2[,colidx]
+                                                              )
+                         );
+      
+      #absolute difference of mean difference
+        diff_abs_of_mean = abs(t(sapply(1:length(unique_factors), function(x) meanByLevel(data)[x,] - real_mean
+                                        )
+                                 )
+                              );
+      
+      #standardization by col
+        level.diff = t(sapply(1:length(unique_factors), function(rowidx) diff_abs_of_mean[rowidx,]/real_sd
+                            )
+                       );
+      
+      #change col names
+        colnames(level.diff) = colnames(data2);
+      #change row names
+        rownames(level.diff) = unique_factors;
 }
 
 tryCatch(checkIdentical(std.level.diff.t, abs(stdLevelDiff(iris)), checkNames=F),
@@ -193,6 +250,10 @@ tryCatch(checkIdentical(std.level.diff.t, abs(stdLevelDiff(iris)), checkNames=F)
 simpleNormSim <- function(means, sim.size=50, var=1) {
 
         # your code here
+      std = sqrt(var)
+      
+      #return
+        simulation = lapply(1:length(means), function(x) rnorm(sim.size, mean = means[x], sd = std))
 }
 
 set.seed(47)
