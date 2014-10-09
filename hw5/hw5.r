@@ -1,3 +1,9 @@
+load("hw5-tests.rda")
+babies = read.csv("babies.csv")
+
+library(RUnit)
+errMsg = function(err) print(paste("ERROR:", err))
+
 # Implement the function "listLengths". Your function should take the
 # follwoing arguments:
 #
@@ -11,6 +17,12 @@
 listLengths <- function(data.list) {
 
     # your code here
+      element.lengths = as.integer(t(sapply(1:length(data.list), function(x) length(data.list[[x]])
+                                            )
+                                     )
+                                   );
+      
+      return(element.lengths);
 }
 
 tryCatch(checkEquals(list.lengths.t, listLengths(ex3.test2)),
@@ -36,6 +48,20 @@ tryCatch(checkEquals(list.lengths.t, listLengths(ex3.test2)),
 standMatrixVariables <- function(data.matrix) {
 
     # your code here
+      no_of_col = dim(data.matrix)[2];
+        
+      standardized.matrix = sapply(1:no_of_col, 
+                                   function(i) sapply(1:no_of_col, 
+                                                      function(j) (mean(data.matrix[,i]) - mean(data.matrix[,j])
+                                                                   )
+                                                                  /
+                                                                  sd(c(data.matrix[,i], data.matrix[,j]
+                                                                       )
+                                                                     )
+                                                      )
+                                  )
+      
+      return(standardized.matrix);
 }
 
 tryCatch(checkEquals(stand.matrix.variables.t,
@@ -65,8 +91,20 @@ testGroupsGestation <- function(data, group1.idcs, group2.idcs,
                                 test.alternative='two.sided') {
 
     stopifnot(!any(group1.idcs %in% group2.idcs))
+    
+    stopifnot(test.alternative == 'two.sided' | test.alternative == 't'
+              | test.alternative == 'less' | test.alternative == 'l'
+              | test.alternative == 'greater' | test.alternative == 'g');
 
     # your code here
+      #creating 2 arguemnts for t test in gestation variable name
+        subset1 = data$gestation[group1.idcs];
+        subset2 = data$gestation[group2.idcs];
+      
+      
+      t.test.output = t.test(subset1, subset2, alternative = test.alternative);
+      
+    return(t.test.output);
 }
 
 tryCatch(checkEquals(test.groups.gestation.t$p.value,
@@ -83,3 +121,13 @@ tryCatch(checkEquals(test.groups.gestation.t$p.value,
 #non.smoke.idcs <- your code here
 #smoking.test <- your code here
 
+smoke.idcs <- which(babies$smoke == 1);
+non.smoke.idcs <- which(babies$smoke != 1);
+
+if(mean(babies$gestation[smoke.idcs]) >= mean(babies$gestation[non.smoke.idcs])) {
+  alt = 'g'
+} else {
+  alt = 'l'
+}
+
+smoking.test = testGroupsGestation(babies, smoke.idcs, non.smoke.idcs, test.alternative = alt);
