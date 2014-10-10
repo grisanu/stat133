@@ -16,19 +16,18 @@ load('hw4-tests.rda')
 # upper and lower quantiles
 
 truncate <- function(input.vector, trim) {
-
-        stopifnot(0<=trim & trim<=0.5) # this line makes sure trim in [0,0.5]
-
-            # your code here
-
-    }
-
-tryCatch(checkEquals(c(2, 3, 4), truncate(1:5, trim=0.25)), error=function(err)
-                  errMsg(err))
+    stopifnot(0<=trim & trim<=0.5) # this line makes sure trim in [0,0.5]
+    # your code here
+    
+    truncated.vector = input.vector[input.vector >= quantile(input.vector, trim) & input.vector <= quantile(input.vector, 1-trim)];
+    
+    return(truncated.vector);
+}
+tryCatch(checkEquals(c(2, 3, 4), truncate(1:5, trim=0.25), error=function(err)
+                  errMsg(err)))
 
 tryCatch(checkIdentical(integer(0), truncate(1:6, trim=0.5)),
                   error=function(err) errMsg(err))
-
 
 # Suppose that you are given some dataset where all variables (columns) are
 # numeric. Further, assume that you consider a given variable for some
@@ -47,7 +46,24 @@ tryCatch(checkIdentical(integer(0), truncate(1:6, trim=0.5)),
 
 outlierCutoff <- function(data) {
         # your code here
+  list_data = as.list(data);
+  
+    median_data = sapply(list_data, median);
+# iqr matrix with lower and upper bound   
+    iqr_data = sapply(list_data, IQR) *1.5;
+      iqr_data = rbind(median_data -iqr_data, median_data +iqr_data);
+ list_data = as.matrix(data)
+# remove outlier
+    list_data = lapply(1:length(data), function(colidx) list_data[(list_data[,colidx] > iqr_data[1,colidx] & 
+                                                                   list_data[,colidx] < iqr_data[2,colidx]), colidx]);
+  
+    outlier.cutoffs = rbind(sapply(list_data, min), sapply(list_data, max));
 
+
+#F
+
+outlier.cutoffs = iqr_data;
+  return(outlier.cutoffs);  
 }
 
 tryCatch(checkIdentical(outlier.cutoff.t, outlierCutoff(ex1.test)),
@@ -78,9 +94,26 @@ removeOutliers <- function(data, max.outlier.rate) {
         stopifnot(max.outlier.rate>=0 & max.outlier.rate<=1)
 
             # your code here
-    }
+        list_data = as.list(data);
+        
+        median_data = sapply(list_data, median);
+        
+        # iqr matrix with lower and upper bound   
+        iqr_data = sapply(list_data, IQR) *1.5;
+        iqr_data = rbind(median_data -iqr_data, median_data +iqr_data);
+        list_data = as.matrix(data);
+        
+        #outlier fraction by row
+        outlier_fraction_by_row = (sapply(1:length(data[,1]), function(rowidx) sum(as.numeric(data[rowidx,] < iqr_data[1,] | 
+                                                                                           data[rowidx,] > iqr_data[2,]))))/5;
+        # rows index that must be removed
+        row_index_removed = which(outlier_fraction_by_row > max.outlier.rate)*-1;
+        subset.data = data.frame(list_data[row_index_removed,]);
+          
+return(subset.data);
+}
 
-tryCatch(checkEquals(remove.outlier.t, removeOutliers(ex1.test, 0.25), ),
+tryCatch(checkEquals(remove.outlier.t, removeOutliers(ex1.test, 0.25), checkNames=F),
                   error=function(err) errMsg(err))
 
 
@@ -104,9 +137,31 @@ tryCatch(checkEquals(remove.outlier.t, removeOutliers(ex1.test, 0.25), ),
 meanByLevel <- function(data) {
 
         # your code here
+    #find not numeric
+    not_num_col = which(sapply(1:length(data), function(colidx) class(data[, colidx]) != "numeric"))
+    unique_factors = unique(data[[not_num_col]])
+    
+    #new data frame without factor variable
+    data2 = data;
+    data2[not_num_col] = NULL;
+    
+    level.means = sapply(1:length(unique_factors), 
+                         function(rowidx) 
+                           sapply(1:length(data2), 
+                                  function(colidx) mean(data2[data[,not_num_col] == unique_factors[rowidx], colidx])
+                                 )
+                         );
+      level.means = t(level.means);
+
+    #change col names
+      colnames(level.means) = colnames(data2);
+    #change row names
+      rownames(level.means) = unique_factors;
+    
+    return(level.means);
 }
 
-tryCatch(checkIdentical(mean.by.level.t, meanByLevel(iris), checkNames=F),
+tryCatch(checkEqualsNumeric(mean.by.level.t, meanByLevel(iris), checkNames=F),
          error=function(err) errMsg(err))
 
 
@@ -133,6 +188,41 @@ tryCatch(checkIdentical(mean.by.level.t, meanByLevel(iris), checkNames=F),
 stdLevelDiff <- function(data) {
 
         # your code here
+        
+      #find not numeric
+        not_num_col = which(sapply(1:length(data), function(colidx) class(data[, colidx]) != "numeric"
+                                   )
+                            )
+        unique_factors = unique(data[[not_num_col]])
+        
+      #new data frame without factor variable
+        data2 = data;
+        data2[not_num_col] = NULL;
+      
+      #real mean of all variables
+        real_mean = sapply(1:length(data2), function(colidx) mean(data2[,colidx]
+                                                                  )
+                           );
+      #real sd of all varialbes
+        real_sd = sapply(1:length(data2), function(colidx) sd(data2[,colidx]
+                                                              )
+                         );
+      
+      #absolute difference of mean difference
+        diff_abs_of_mean = abs(t(sapply(1:length(unique_factors), function(x) meanByLevel(data)[x,] - real_mean
+                                        )
+                                 )
+                              );
+      
+      #standardization by col
+        level.diff = t(sapply(1:length(unique_factors), function(rowidx) diff_abs_of_mean[rowidx,]/real_sd
+                            )
+                       );
+      
+      #change col names
+        colnames(level.diff) = colnames(data2);
+      #change row names
+        rownames(level.diff) = unique_factors;
 }
 
 tryCatch(checkIdentical(std.level.diff.t, abs(stdLevelDiff(iris)), checkNames=F),
@@ -160,6 +250,10 @@ tryCatch(checkIdentical(std.level.diff.t, abs(stdLevelDiff(iris)), checkNames=F)
 simpleNormSim <- function(means, sim.size=50, var=1) {
 
         # your code here
+      std = sqrt(var)
+      
+      #return
+        simulation = lapply(1:length(means), function(x) rnorm(sim.size, mean = means[x], sd = std))
 }
 
 set.seed(47)

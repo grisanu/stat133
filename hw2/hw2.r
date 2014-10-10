@@ -74,7 +74,7 @@ OW_NHANES2 = OW_limit < family$bmi;
 
 # Now calculate OW_weight 
 # OW_weight <- your code here
-OW_weight = OW_limit*2.2*(((2.5*family$height)/100)^2);
+OW_weight = OW_limit*2.2*(((2.54*family$height)/100)^2);
 
 # Make a plot of actual weight against the weight at which they would
 # be overweight using the plot function.
