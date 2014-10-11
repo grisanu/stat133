@@ -223,6 +223,8 @@ stdLevelDiff <- function(data) {
         colnames(level.diff) = colnames(data2);
       #change row names
         rownames(level.diff) = unique_factors;
+      
+      return(level.diff);
 }
 
 tryCatch(checkIdentical(std.level.diff.t, abs(stdLevelDiff(iris)), checkNames=F),
