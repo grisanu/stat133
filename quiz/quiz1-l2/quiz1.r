@@ -60,6 +60,8 @@ priceByRooms <- function(room.range, br, prices) {
       in_range_index = which(br <= room.range[2] & br >= room.range[1]);
       
       avg_prices = mean(prices[in_range_index]);
+      
+      return(avg_prices);
   
 }
 
