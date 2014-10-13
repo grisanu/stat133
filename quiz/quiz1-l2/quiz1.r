@@ -1,7 +1,7 @@
 # Please load in the dataset included in the quiz1-l2 directory. It will be
 # required to perform the following tasks. The dataset includes data for houses
 # in the city of Berkeley.
-
+load("SFHousing-2.rda");
 
 # calculate the mean and median bsqft of houses in Berkeley. Store these as the
 # variables <mean.bsqft> and <med.bsqft> respectively.
@@ -9,6 +9,8 @@
 # mean.bsft <- your code here
 # med.bsqft <- your code here
 
+mean.bsqft <- mean(housing$bsqft, na.rm = T);
+med.bsqft <- median(housing$bsqft, na.rm = T);
 
 # For each house in the dataset, calculate the squared difference between its
 # bsqft and the median bsqft of houses in Berkeley. Store this as the variable
@@ -16,7 +18,7 @@
 # the number of observations in the dataset
 
 # bsqft.diffs <- your code here
-
+bsqft.diffs <- ((housing$bsqft)^2) - med.bsqft; ######
 
 
 # Please create two new data frames with the following two subsets
@@ -27,6 +29,8 @@
 # bsqft.greater <- your code here
 # bsqft.less <- your code here
 
+bsqft.greater <- as.data.frame(housing[housing$bsqft > mean.bsqft,]); #####
+bsqft.less <- as.data.frame(housing[housing$bsqft < mean.bsqft,]); #####
 
 # For each of your subsets, create a vector giving the price of each house. Name
 # these variables <rooms.greater.price> and <rooms.less.price>.
@@ -34,6 +38,8 @@
 # rooms.greater.price <- your code here
 # rooms.less.price <- your code here
 
+rooms.greater.price <- bsqft.greater$price;
+rooms.less.price <- bsqft.less$price;
 
 
 # Please implement the function priceByRooms. Your function should take the
@@ -51,7 +57,10 @@
 priceByRooms <- function(room.range, br, prices) {
 
     # your code here
-
+      in_range_index = which(br <= room.range[2] & br >= room.range[1]);
+      
+      avg_prices = mean(prices[in_range_index]);
+  
 }
 
 
@@ -61,3 +70,8 @@ priceByRooms <- function(room.range, br, prices) {
 # 2) axis labels: "price" and "number of rooms"
 # 3) plotting character set to 20
 
+plot(housing$br,housing$price,
+     main = "Housing price vs Number of Rooms",
+     xlab = "br",
+     ylab = "house price"
+     )
