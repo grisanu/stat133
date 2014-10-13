@@ -287,7 +287,7 @@ text(log(with_medals$pop[top5]),
 
 ## you only need to run these two lines once:
 #install.packages("maps")
-#library("maps")
+library("maps")
 
 # world <- map( your code here )
 world = map(fill = TRUE, col = "grey88")
@@ -327,7 +327,7 @@ symbols(wonMedal$longitude,
 
 # You only need to call these two lines once:
 #install.packages("RColorBrewer")
-#library("RColorBrewer")
+library("RColorBrewer")
 
 # display.brewer.all( your code here )
 # brewer.pal( your code here )
