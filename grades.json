@@ -65,6 +65,19 @@
                     "earned": 21
                 }
             }
+        }, 
+        "hw5": {
+            "note": "", 
+            "hash": "31c9eb40d5063829b16a7a415c3f438c7fcb4c63", 
+            "earned": 16, 
+            "possible": 16, 
+            "penalty": 0, 
+            "parts": {
+                "hw5": {
+                    "possible": 16, 
+                    "earned": 16
+                }
+            }
         }
     }, 
     "section": "lab2"
