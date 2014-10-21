@@ -96,11 +96,9 @@ fit <- lm(bwt ~ gestation, data=infants)
 ## Plot the line in red and put your own x- and y-axis labels on the plot.
 plot(infants$gestation, infants$bwt,
      xlab = "gestation",
-     ylab = "bwt",
-     xlim = c(0,400),
-     ylim = c(0, 200))
+     ylab = "bwt")
 
-abline(coef=c(fit[[1]][1],fit[[2]][2]), col = "red") ###
+abline(coef = fit$coefficients, col = "red") ###
 ## Plot a histogram of the fathers' heights (varible dht in the data frame).
 hist(infants$dht)
 
