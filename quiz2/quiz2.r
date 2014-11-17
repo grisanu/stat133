@@ -32,7 +32,7 @@ interarrival_times <- function(num) {
   # your code here
   ###############################
   rate_ = 1/5;
-  inter = rgamma(num, shape = 1, rate = rate_);
+  inter = rexp(num, rate = rate_);
   return(inter)
 }
 
@@ -157,7 +157,7 @@ avg_wait_total = sapply(1:500, function(i) c(mean(sim500[[i]]$wait), mean(sim500
 break_times <- function(n){
   # your code here
   br_times = rnorm(n, mean = 3, sd = sqrt(2));
-    for (i = 1:n) {
+    for (i in 1:n) {
       if (br_times < 0) {
         br_times = 0;
       }
@@ -182,10 +182,10 @@ break_times <- function(n){
 
 serv_wait_sick <- function(inter, serv, br_times){
 #   # your code here
-  for (i = 6:length(serv)) {
-    serv[i] = serv*1.5
-  }
-  for(i = seq(2, length()))
+#   for (i in 6:length(serv)) {
+#     serv[i] = serv*1.5
+#   }
+#   for(i in seq(2, length()) {
 }
 
 # End of quiz.
