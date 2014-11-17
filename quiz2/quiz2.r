@@ -10,6 +10,8 @@
 
 num_students <- function(k) {
   # your code here
+  num = rpois(1, k);
+  return(num)
 }
 
 # Assume all students arrive at different times.
@@ -28,6 +30,10 @@ num_students <- function(k) {
 
 interarrival_times <- function(num) {
   # your code here
+  ###############################
+  rate_ = 1/5;
+  inter = rgamma(num, shape = 1, rate = rate_);
+  return(inter)
 }
 
 # For student i, it takes Z_i minutes for Johnny to answer questions.
@@ -43,6 +49,9 @@ interarrival_times <- function(num) {
 
 service_times <- function(num) {
   # your code here
+  rate_ = 1/7;
+  serv = rexp(num, rate = rate_);
+  return(serv)
 }
 
 # Compute the waiting time for each student.
@@ -66,6 +75,16 @@ service_times <- function(num) {
 # <wait>: a vector that contains the waiting time for each student
 waiting_times <- function(inter, serv){
   # your code here
+  wait = rep(0, length(serv));
+  inter[1] = 0;
+  
+  for (i in 2:length(serv)) {
+    wait[i] = serv[i-1] + wait[i-1] - inter[i];
+      if (wait[i] < 0 ) {
+        wait[i] = 0;
+      }
+  }
+  return(wait)
 }
 
 # Simulation
@@ -81,6 +100,15 @@ waiting_times <- function(inter, serv){
 
 queueing_sim <- function(k) {
   # your code here
+  no_stu = num_students(k);
+  
+  inter = interarrival_times(no_stu);
+  serv = service_times(no_stu);
+  wait = waiting_times(inter, serv);
+  
+  
+  sim = data.frame(inter, serv, wait, total = serv+wait);
+  return(sim)
 }
 
 set.seed(1234)
@@ -89,7 +117,10 @@ set.seed(1234)
 # sim500 is a list of 500 data frames.
 # sim500 <- you code here
 
+k = 11;
 
+sim500 = lapply(1:500, function(x) queueing_sim(k));
+return(sim500)
 
 
 # For each simulation, compute the average waiting time and
@@ -98,8 +129,7 @@ set.seed(1234)
 # avg_wait_total is a 2x500 matrix (without any row names or column names).
 # avg_wait_total <- your code here
 
-
-
+avg_wait_total = sapply(1:500, function(i) c(mean(sim500[[i]]$wait), mean(sim500[[i]]$total)))
 
 #-----------------------------------------------------------------------
 # Suppose Johnny is not feeling well and he needs to take a break of 
@@ -126,6 +156,13 @@ set.seed(1234)
 
 break_times <- function(n){
   # your code here
+  br_times = rnorm(n, mean = 3, sd = sqrt(2));
+    for (i = 1:n) {
+      if (br_times < 0) {
+        br_times = 0;
+      }
+    }
+  return(br_times)
 }
 
 # Write a function called serv_wait_sick that computes
@@ -144,7 +181,11 @@ break_times <- function(n){
 # Remark: There is no randomness in this function.
 
 serv_wait_sick <- function(inter, serv, br_times){
-  # your code here
+#   # your code here
+  for (i = 6:length(serv)) {
+    serv[i] = serv*1.5
+  }
+  for(i = seq(2, length()))
 }
 
 # End of quiz.
