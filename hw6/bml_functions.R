@@ -277,8 +277,8 @@ start_time = proc.time();
   
   m = bml.init(r,c,p);
 
-#   #imaging
-#   img1 = image(t(apply(m,2,rev)), col = c('white','red', 'blue'));
+  #imaging
+  img1 = image(t(apply(m,2,rev)), col = c('white','red', 'blue'));
         
   # initialise variables
   curr_step = 0;
@@ -310,8 +310,8 @@ start_time = proc.time();
 #timer
 end_time = (proc.time() - start_time)[3];
   
-#   #imaging
-#   img2 = image(t(apply(m,2,rev)), col = c('white','red', 'blue'));
+  #imaging
+  img2 = image(t(apply(m,2,rev)), col = c('white','red', 'blue'));
         
-  return(list(m, curr_step, hit_max_step, gridlock, end_time))
+  return(list(m, curr_step, hit_max_step, gridlock, end_time, img1,img2))
 }

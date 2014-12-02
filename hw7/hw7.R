@@ -38,21 +38,24 @@ source("computeSJDistance.R")
 # Check the class and dimension of [speeches].  Open the textfile in 
 # an editor and compare it to [speeches]
 
-speeches <- <your code here>
+con = file("stateoftheunion1790-2012.txt");
+speeches <- readLines(con);
+close(con);
 
 # The speeches are separated by a line with three stars (***).
 # Create a numeric vector [breaks] with the line numbers of ***.
 # Create the variable [n.speeches] a numeric variable with the number of speeches
-# Question: Does every single *** in the file indicate the beginning of a speech?
+# Question: Does every single *** in the file indicate the beginning of a speech? No
 
-breaks <- <your code here>
-n.speeches <- <your code here>
+breaks <- which(speeches == "***");
+n.speeches <- length(breaks);
 
 # Use the vector [breaks] and [speeches] to create a 
 # character vector [presidents]
 # with the name of the president delivering the address
 
-presidents <- <your code here>
+presidents_lines = breaks +3;
+presidents = sapply(presidents_lines, function(x) speeches[x]);
 
 # Use [speeches] and the vector [breaks] to create [tempDates], 
 # a character vector with the dates of each speech
@@ -60,11 +63,12 @@ presidents <- <your code here>
 # a numeric vector [speechYr] with the year of each speech, and
 # a character vector [speechMo] with the month of each speech
 # Note: you may need to use two lines of code to create one/both variables.
-  
-tempDates <- <your code here>
-  
-speechYr <- <your code here>
-speechMo <- <your code here>
+dates_lines = breaks +4;
+tempDates <- speeches[dates_lines];
+tempDates = strsplit(tempDates, " ");
+
+speechYr <- sapply(1:length(tempDates), function(x) tempDates[[x]][3]);
+speechMo <- sapply(1:length(tempDates), function(x) tempDates[[x]][1]);
 
 # Create a list variable [speechesL] which has the full text of each speech.
 # The variable [speechesL] should have one element for each speech.
@@ -83,9 +87,19 @@ speeches <- gsub("Mr.", "Mr", speeches)
 speeches <- gsub("Mrs.", "Mrs", speeches)
 speeches <- gsub("U.S.", "US", speeches)
 
+
 speechesL <- list()
 for(i in 1:n.speeches){
-  <your code here>
+  #collapse text into 1 large chunk
+  if (i < n.speeches){
+    speechesL[[i]] = paste(speeches[(breaks[i]+6):(breaks[i+1]-1)], collapse = "");
+  } else {
+    speechesL[[i]] = paste(speeches[(breaks[i]+6):length(speeches)], collapse = "");
+  }
+  
+  #seperate each speech by [.?!]
+  speechesL[[i]] = strsplit(speechesL[[i]], "[.!?]");
+  
 }
 
 #### Word Vectors 
