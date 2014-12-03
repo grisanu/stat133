@@ -1,3 +1,4 @@
+here = T;
 # Quiz 3
 # Number of Problems: 6
 # The quiz is out of 22 points.
@@ -14,6 +15,9 @@
 numAtElements <- function(chvec){
   
   # your code here
+  count = grep("[:alnum:]*[@]+[:alnum:]*", chvec);
+  num.at = length(count);
+  return(num.at)
 }
 
 # Function 2 (3 points)
@@ -27,6 +31,8 @@ numAtElements <- function(chvec){
 unexclaim <- function(chstring) {
   
   # your code here
+  newstring = gsub("[:alnum:]*[:punct:]*[:space:]*[!][:alnum:]*[:punct:]*[:space:]*", ".", chstring);
+  return(newstring);
 }
 
 # Function 3 (3 points)
@@ -44,6 +50,14 @@ unexclaim <- function(chstring) {
 updateDate <- function(dates, old.yr) {
   
   # your code here
+  split_date = unlist(strsplit(dates, "[, ]"));
+  split_date = split_date[split_date != ""];
+  
+  temp1 = which(split_date == old.yr);
+  temp2 = sapply(temp1, function(x) replace(split_date, x, "2015"));
+  
+  updated.dates = split_date
+  return(updated.dates);
 }
 
 # Function 4 (4 points)
@@ -110,6 +124,26 @@ sumDigits <- function(chvec){
 dnaTransform <- function(DNA.vec){
     
   # your code here
+  temp1 = grep("^ATTA[:alnum:]*", DNA.vec)
+  if (length(temp1) < 2) {
+    return()
+  }
+  dna1 = DNA.vec[temp1[1]];
+  dna2 = DNA.vec[temp1[2]];
+  
+  temp2 = unlist(strsplit(dna1, ""));
+  
+  dna1_1 = paste(temp2[1:5], collapse = "");
+  dna1_2 = paste(temp2[5:10], collapse = "")
+  
+  temp3 = unlist(strsplit(dna2, ""));
+  dna2_1 = paste(temp3[1:5], collapse = "");
+  dna2_2 = paste(temp3[5:10], collapse = "");
+  
+  ret_1 = paste(c(dna1_1, dna2_2), collapse = "");
+  ret2 = paste(c(dna2_1, dna1_2), collapse = "")
+  
+  return(list(ret_1, ret2))
 }
 
 # Some test cases:
