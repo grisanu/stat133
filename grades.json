@@ -142,6 +142,23 @@
                     "earned": 3
                 }
             }
+        }, 
+        "hw7": {
+            "note": "", 
+            "hash": "7d997f4036382a88eb0ed455732ea6c163e0bc23", 
+            "earned": 6, 
+            "possible": 18, 
+            "penalty": 0, 
+            "parts": {
+                "hw7": {
+                    "possible": 10, 
+                    "earned": 6
+                }, 
+                "hw7_plots": {
+                    "possible": 8, 
+                    "earned": 0
+                }
+            }
         }
     }, 
     "section": "lab2"
